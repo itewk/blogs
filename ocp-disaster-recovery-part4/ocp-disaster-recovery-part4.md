@@ -18,10 +18,10 @@ Solution, PersistentVolumeClaim for storing etcd backups. This does kick the pro
 To accomplish this, we have to get sneaky, very very sneaky. [OCP Disaster Recovery Part 1 - How to Create Automated ETCD Backup in OpenShift 4.x](https://cloud.redhat.com/blog/ocp-disaster-recovery-part-1-how-to-create-automated-etcd-backup-in-openshift-4.x) very cleverly took the manual instructions from the backing up etcd documentation and automated them with a CronJob. The sneakiness we will layer on top of that approach is rather than having a CronJob create a debug node to then execute the backup in, we will make the CronJob a debug node. I could wax poetic in prose for a few more paragraphs on how this works, but here are some pictures instead.
 
 *Previews backup to control node local disk process*
-![Previews backup to control node local disk process](ETCD-Backup-old.png)
+<img alt="Previews backup to control node local disk process" src="ETCD-Backup-old.png" width="700">
 
 *New backup to external storage via PersistentVolumeClaim process*
-![New backup to external storage via PersistentVolumeClaim process](ETCD-Backup-new.png)
+<img alt="New backup to external storage via PersistentVolumeClaim process" src="ETCD-Backup-new.png" width="950">
 
 The “magic” that makes the backup to PersistentVolumeClaim process works is that the container created by the CronJob has the same permissions and mounts that a debug container for a node has, and additionally has a PersistentVolumneClaim mounted to copy the etcd backup to.
 
