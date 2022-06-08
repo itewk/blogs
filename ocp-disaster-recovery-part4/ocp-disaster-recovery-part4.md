@@ -17,8 +17,8 @@ Solution, PersistentVolumeClaim for storing etcd backups. This does kick the pro
 
 To accomplish this, we have to get sneaky, very very sneaky. [OCP Disaster Recovery Part 1 - How to Create Automated ETCD Backup in OpenShift 4.x](https://cloud.redhat.com/blog/ocp-disaster-recovery-part-1-how-to-create-automated-etcd-backup-in-openshift-4.x) very cleverly took the manual instructions from the backing up etcd documentation and automated them with a CronJob. The sneakiness we will layer on top of that approach is rather than having a CronJob create a debug node to then execute the backup in, we will make the CronJob a debug node. I could wax poetic in prose for a few more paragraphs on how this works, but here are some pictures instead.
 
-*Previews backup to control node local disk process*
-<img alt="Previews backup to control node local disk process" src="ETCD-Backup-old.png" width="700">
+*Previous backup to control node local disk process*
+<img alt="Previous backup to control node local disk process" src="ETCD-Backup-old.png" width="700">
 
 *New backup to external storage via PersistentVolumeClaim process*
 <img alt="New backup to external storage via PersistentVolumeClaim process" src="ETCD-Backup-new.png" width="950">
@@ -30,7 +30,7 @@ Okay, great idea, but how do I do it?
 ## Automated etcd Backups GitOps
 
 ### Context
-I could inline the five (5) kubernetes resources currently needed to make this all work right here for you to copy and paste into your cluster, but what happens when someone finds a bug? Or a way to do it better? I don’t want to be updating this blog post all the time and you don't want to have to be constantly checking back here for the latest and greatest updates to the approach. Additionally, I don’t want to be the facilitator of bad habits, because as we all well know, you  hould never be manually editing any OpenShift configuration directly, you should be teaching the robots to do it.
+I could inline the five (5) kubernetes resources currently needed to make this all work right here for you to copy and paste into your cluster, but what happens when someone finds a bug? Or a way to do it better? I don’t want to be updating this blog post all the time and you don't want to have to be constantly checking back here for the latest and greatest updates to the approach. Additionally, I don’t want to be the facilitator of bad habits, because as we all well know, you should never be manually editing any OpenShift configuration directly, you should be teaching the robots to do it.
 
 ### Solution
 Solution, the robot, aka, [OpenShift GitOps](https://docs.openshift.com/container-platform/4.10/cicd/gitops/understanding-openshift-gitops.html) ([ArgoCD](https://argoproj.github.io/cd/)). I will not recount all the reasons to use a GitOps approach here nor will I pontificate the wonders that is ArgoCD, both of those have been done in [great detail already](https://cloud.redhat.com/blog/tag/gitops). If you have no idea what I am referring to, go do a quick primer with
